@@ -20,13 +20,17 @@ func PCKS(src []byte, blocksize int) ([]byte, int) {
 		pad := bytes.Repeat([]byte{byte(padlen)}, padlen)
 		rt := append(src, pad...)
 		return rt, (len(rt))
-	} else {
-		return src, len(src)
 	}
+	return src, len(src)
+
 }
 
 // RemovePadding remove padding
-func RemovePadding(src []byte) []byte {
+func RemovePadding(src []byte, blocksize int) []byte {
+	if (len(src) % blocksize) == 0 {
+		return src
+	}
 	padlen := int(src[len(src)-1])
 	return src[0 : len(src)-padlen]
+
 }
