@@ -15,9 +15,14 @@ func PCKS7(src []byte) ([]byte, int) {
 //PCKS custom padding with block size
 func PCKS(src []byte, blocksize int) ([]byte, int) {
 	padlen := (blocksize - len(src)%blocksize)
-	pad := bytes.Repeat([]byte{byte(padlen)}, padlen)
-	rt := append(src, pad...)
-	return rt, (len(rt))
+
+	if padlen < blocksize {
+		pad := bytes.Repeat([]byte{byte(padlen)}, padlen)
+		rt := append(src, pad...)
+		return rt, (len(rt))
+	} else {
+		return src, len(src)
+	}
 }
 
 // RemovePadding remove padding
