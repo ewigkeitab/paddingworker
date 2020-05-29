@@ -26,11 +26,22 @@ func PCKS(src []byte, blocksize int) ([]byte, int) {
 }
 
 // RemovePadding remove padding
-func RemovePadding(src []byte, blocksize int) []byte {
-	if (len(src) % blocksize) == 0 {
+func RemovePadding(src []byte) []byte {
+	padlen := int(src[len(src)-1])
+
+	ispadding := true
+	for _, x := range src[len(src)-padlen : len(src)-1] {
+		if int(x) != padlen {
+			ispadding = false
+
+			break
+		}
+	}
+
+	if !ispadding {
 		return src
 	}
-	padlen := int(src[len(src)-1])
+
 	return src[0 : len(src)-padlen]
 
 }
